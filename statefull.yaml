@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: nginx  # Selects Pods with label 'app: nginx'
+  serviceName: "nginx"  # Governs the network identity for the set
+  replicas: 3  # Three replicas of the StatefulSet
+  minReadySeconds: 10  # Minimum number of seconds for which a newly created Pod should be ready before considering it available
+  template:
+    metadata:
+      labels:
+        app: nginx  # Labels Pods created by this template with 'app: nginx'
+    spec:
+      terminationGracePeriodSeconds: 10  # Time to wait for the Pod to terminate gracefully
+      containers:
+      - name: nginx
+        image: registry.k8s.io/nginx-slim:0.8  # Nginx container image
+        ports:
+        - containerPort: 80  # Port to expose from the container
+          name: web  # Name of the port
+
